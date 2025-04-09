@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Futures Margin Calculator</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
+    h2, h5 { text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+    th { background-color: #333; color: #fff; }
+    input { padding: 8px; font-size: 16px; width: 100px; }
+  </style>
+</head>
+<body>
+  <h2>📈 Futures Margin Calculator 📉</h2>
+  <h5>Do Your Own Research * Do Your Own Risk</h5>
+  <center>
+    <label for="capital">💰 Your Capital (USDT): </label>
+    <input type="number" id="capital" value="50" min="1">
+  </center>
+  <table>
+    <thead>
+      <tr>
+        <th>Leverage</th>
+        <th>Margin %</th>
+        <th>Margin (USDT)</th>
+        <th>Position Size (USDT)</th>
+        <th>Sisa Modal (USDT)</th>
+      </tr>
+    </thead>
+    <tbody id="results"></tbody>
+  </table>
+
+  <script>
+    const leverageData = [
+      { lev: 5, percent: 40 },
+      { lev: 10, percent: 20 },
+      { lev: 15, percent: 13 },
+      { lev: 20, percent: 10 },
+      { lev: 25, percent: 8 },
+      { lev: 50, percent: 4 },
+      { lev: 75, percent: 2 },
+      { lev: 100, percent: 2 },
+      { lev: 200, percent: 1 },
+      { lev: 400, percent: 1 }
+    ];
+
+    function updateTable() {
+      const capital = parseFloat(document.getElementById('capital').value);
+      const tbody = document.getElementById('results');
+      tbody.innerHTML = '';
+
+      leverageData.forEach(item => {
+        const margin = (capital * item.percent) / 100;
+        const positionSize = margin * item.lev;
+        const remaining = capital - margin;
+
+        const row = `
+          <tr>
+            <td>${item.lev}x</td>
+            <td>${item.percent}%</td>
+            <td>${margin.toFixed(2)}</td>
+            <td>${positionSize.toFixed(2)}</td>
+            <td>${remaining.toFixed(2)}</td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
+      });
+    }
+
+    document.getElementById('capital').addEventListener('input', updateTable);
+    updateTable();
+  </script>
+</body>
+</html>
